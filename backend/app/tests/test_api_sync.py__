@@ -1,0 +1,83 @@
+import pytest
+from rest_framework import status
+from django.urls import reverse
+from rest_framework.test import APIClient
+
+from app.models import Department, Organization
+
+
+@pytest.fixture()
+def api_client():
+    return APIClient()
+
+
+@pytest.fixture()
+def organization():
+    org = Organization.objects.create(name="Test Organization")
+    yield org
+    try:
+        org.delete()
+    except:
+        pass
+
+
+@pytest.fixture()
+def department(organization):
+    dept = Department.objects.create(organization=organization, name="Test Department")
+    yield dept
+    try:
+        dept.delete()
+    except:
+        pass
+
+
+@pytest.mark.django_db
+class TestOrganizationViewSet:
+
+    def test_create_organization(self, api_client):
+        response = api_client.post(reverse('organization-list'), {'name': 'New Organization'})
+        assert response.status_code == status.HTTP_201_CREATED
+        assert Organization.objects.count() == 1
+        assert Organization.objects.first().name == 'New Organization'
+
+    def test_get_organization(self, organization, api_client):
+        response = api_client.get(reverse('organization-detail', args=[organization.id]))
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['name'] == organization.name
+
+    def test_update_organization(self, organization, api_client):
+        response = api_client.put(reverse('organization-detail', args=[organization.id]), {'name': 'Updated Organization'})
+        assert response.status_code == status.HTTP_200_OK
+        organization.refresh_from_db()
+        assert organization.name == 'Updated Organization'
+
+    def test_delete_organization(self, organization, api_client):
+        response = api_client.delete(reverse('organization-detail', args=[organization.id]))
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert Organization.objects.count() == 0
+
+
+@pytest.mark.django_db
+class TestDepartmentViewSet:
+
+    def test_create_department(self, api_client, organization):
+        response = api_client.post(reverse('department-list'), {'name': 'New Department', 'organization': organization.id})
+        assert response.status_code == status.HTTP_201_CREATED
+        assert Department.objects.count() == 1
+        assert Department.objects.first().name == 'New Department'
+
+    def test_get_department(self, department, api_client):
+        response = api_client.get(reverse('department-detail', args=[department.id]))
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data['name'] == department.name
+
+    def test_update_department(self, department, api_client):
+        response = api_client.patch(reverse('department-detail', args=[department.id]), {'name': 'Updated Department'})
+        assert response.status_code == status.HTTP_200_OK
+        department.refresh_from_db()
+        assert department.name == 'Updated Department'
+
+    def test_delete_department(self, department, api_client):
+        response = api_client.delete(reverse('department-detail', args=[department.id]))
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert Department.objects.count() == 0

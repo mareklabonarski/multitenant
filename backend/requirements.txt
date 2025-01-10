@@ -1,0 +1,11 @@
+psycopg2-binary
+gunicorn
+django
+djangorestframework
+pytest
+uvicorn
+pytest-django
+django-extensions
+pytest-asyncio
+adrf
+faker

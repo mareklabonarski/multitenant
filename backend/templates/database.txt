@@ -1,0 +1,15 @@
+import os
+env = os.environ.get
+
+
+# Base DATABASES configuration
+DATABASES = {
+    "{{tenant_id}}": {
+        "NAME": "{{tenant_id}}",
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": "{{db_user}}",
+        "PASSWORD": "{{db_password}}",
+        "HOST": "{{db_host}}",
+        "PORT": "{{db_port}}",
+    }
+}
