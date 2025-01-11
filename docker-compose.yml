@@ -25,7 +25,10 @@ services:
       - POSTGRES_PORT=5432
 
   nginx:
-    image: nginx:latest
+#    image: nginx:latest
+    build:
+      context: nginx
+      dockerfile: Dockerfile
     ports:
       - "80:80"
     volumes:
