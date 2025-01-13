@@ -3,9 +3,11 @@ gunicorn
 django
 djangorestframework
 pytest
+pytest-mock
 uvicorn
 pytest-django
 django-extensions
 pytest-asyncio
 adrf
 faker
+pydevd-pycharm

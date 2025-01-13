@@ -4,8 +4,6 @@ from django.db import models
 from users.models import User
 
 
-# Create your models here.
-
 
 class Tenant(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

@@ -2,7 +2,6 @@ import logging
 from contextlib import contextmanager, asynccontextmanager
 from django.http import Http404
 from asgiref.sync import iscoroutinefunction
-from django.urls import resolve
 
 from backend.context import tenant_context, get_tenant_db
 

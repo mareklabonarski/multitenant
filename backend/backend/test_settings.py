@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import glob
 import importlib
 import os
+import uuid
 from pathlib import Path
 
 from backend.utils import get_tenant_files, get_tenant_modules
@@ -84,9 +85,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 ASGI_APPLICATION = 'backend.asgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+TENANT_1_ID, TENANT_2_ID = '1c78aa55-09e2-452b-9fe3-f233a4fe9eae', 'fb79c74d-6cfa-4399-ae5e-e91f365bd628'
+
 DATABASES = {
     "default": {
         "NAME": "tenants",
@@ -95,7 +97,23 @@ DATABASES = {
         "PASSWORD": env("POSTGRES_PASSWORD"),
         "HOST": env("POSTGRES_HOST"),
         "PORT": env("POSTGRES_PORT"),
-    }
+    },
+    "TENANT_1": {
+        "NAME": TENANT_1_ID,
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST"),
+        "PORT": env("POSTGRES_PORT"),
+    },
+    "TENANT_2": {
+        "NAME": TENANT_2_ID,
+        "ENGINE": "django.db.backends.postgresql",
+        "USER": env("POSTGRES_USER"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "HOST": env("POSTGRES_HOST"),
+        "PORT": env("POSTGRES_PORT"),
+    },
 }
 # Load tenant databases
 SETTINGS_DIR = Path(__file__).parent

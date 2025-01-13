@@ -28,10 +28,10 @@ def create_db_file(request, tenant):
         'db_password': settings.DATABASES['default']['PASSWORD'],  # normally would be from the model
     }
 
-    rendered_content = render_to_string('database.txt', context)
+    database = render_to_string('database.txt', context)
     file_path = os.path.join(settings.TENANT_DB_DIR, f'{tenant.name}.py')
     with open(file_path, 'w') as file:
-        file.write(rendered_content)
+        file.write(database)
 
     messages.success(request, f'Created Database definition for {tenant.subdomain}: {tenant.id}')
     return True
@@ -43,10 +43,10 @@ def create_server_file(request, tenant):
         'tenant_id': tenant.id,
     }
 
-    rendered_content = render_to_string('nginx-server.txt', context)
+    server = render_to_string('nginx-server.txt', context)
     file_path = os.path.join(settings.NGINX_CONF_DIR, f'{tenant.subdomain}.conf')
     with open(file_path, 'w') as file:
-        file.write(rendered_content)
+        file.write(server)
     messages.success(request, f'Created subdomain configuration in NGINX for {tenant.subdomain}: {tenant.id}')
     return True
 

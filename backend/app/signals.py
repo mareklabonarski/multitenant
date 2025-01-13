@@ -12,4 +12,4 @@ from users.models import User
 @receiver(post_save, sender=Customer)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
-        Token.objects.create(user=instance)
+        Token.objects.using(instance._state.db).create(user=instance)

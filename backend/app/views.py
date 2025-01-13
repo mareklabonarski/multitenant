@@ -7,9 +7,6 @@ from django.http import JsonResponse
 from app.models import Organization
 
 
-# Create your views here.
-
-
 def hello(request):
     logging.info(request.headers)
     return JsonResponse({'tenant-id': request.headers.get('X-Tenant-ID', 'default')})
