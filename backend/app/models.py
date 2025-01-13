@@ -25,3 +25,7 @@ class Customer(User):
 
     def __str__(self):
         return f'{self.username}@{get_tenant_subdomain()}'
+
+    class Meta:
+        verbose_name = 'Customer'
+        verbose_name_plural = 'Customers'
